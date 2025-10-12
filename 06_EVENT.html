@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2_Event-문제</title>
+  <style>
+    .area {
+      border: 1px solid red;
+      min-height: 200px;
+    }
+
+    .view,
+    .edit {
+      height: 150px;
+      width: 400px;
+      font-family: sans-serif;
+      font-size: 14px;
+      display: block;
+    }
+
+    .view {
+      padding: 2px;
+      border: 1px solid black;
+    }
+
+    .edit {
+      border: 3px solid blue;
+      padding: 0px;
+    }
+
+    .edit:focus {
+      outline: none;
+    }
+  </style>
+</head>
+
+<body>
+  <h3>문제 1</h3>
+  <p>
+    추가하기 버튼을 클릭할 때마다 빨간색/노란색 div가 번갈아 추가되고, 삭제하기 버튼은 마지막 div를 삭제합니다.
+  </p>
+  <button id="add">추가하기</button>
+  <button id="remove">삭제하기</button>
+  <div id="area1" class="area"></div>
+
+  <script>
+    const addBtn = document.getElementById("add");
+    const removeBtn = document.getElementById("remove");
+    const area1 = document.getElementById("area1");
+    let isRed = true; 
+
+    addBtn.addEventListener("click", () => {
+      const div = document.createElement("div");
+      div.style.width = "100px";
+      div.style.height = "100px";
+      div.style.border = "1px solid black";
+      div.style.display = "inline-block";
+      div.style.margin = "5px";
+      div.style.backgroundColor = isRed ? "red" : "yellow";
+      area1.appendChild(div);
+      isRed = !isRed; 
+    });
+
+    removeBtn.addEventListener("click", () => {
+      if (area1.lastElementChild) {
+        area1.removeChild(area1.lastElementChild);
+        isRed = !isRed; 
+      }
+    });
+  </script>
+
+  <h3>문제 2</h3>
+  <p>
+    div 클릭 시 textarea로 바뀌고 입력 후 Enter 또는 blur 시 입력 내용이 다시 div에 반영됩니다.
+  </p>
+
+  <div id="view" class="view">여기를 클릭해서 내용을 입력하세요.</div>
+
+  <script>
+
+    function makeEditable(div) {
+      div.addEventListener("click", function handler() {
+        const textarea = document.createElement("textarea");
+        textarea.className = "edit";
+        textarea.value = div.innerHTML;
+
+        div.replaceWith(textarea);
+        textarea.focus();
+
+ 
+        const finishEdit = () => {
+          const newDiv = document.createElement("div");
+          newDiv.className = "view";
+          newDiv.innerHTML = textarea.value;
+          textarea.replaceWith(newDiv);
+
+
+          makeEditable(newDiv);
+        };
+
+        textarea.addEventListener("blur", finishEdit);
+        textarea.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            finishEdit();
+          }
+        });
+      });
+    }
+
+
+    const view = document.getElementById("view");
+    makeEditable(view);
+  </script>
+</body>
+
+</html>

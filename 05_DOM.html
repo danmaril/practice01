@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1_DOM-문제</title>
+    <style>
+        .area {
+            border: 1px solid black;
+            height: 100px;
+            width: 100px;
+        }
+
+        .first,
+        .second,
+        .third {
+            width : 100px;
+            height : 100px;
+            border : 1px solid black;
+            display : inline-block;
+            margin : 10px;
+        }
+    </style>
+</head>
+<body>
+    <h3>문제 1. 색상 선택 후 div 배경색 변경</h3>
+    <div id="div1" class="area"></div>
+    <input type="color" id="selectColor">
+    <button onclick="colorChange();">변경</button>
+
+    <script>
+        function colorChange() {
+            const color = document.getElementById("selectColor").value;
+            const box = document.getElementById("div1");
+            box.style.backgroundColor = color;
+        }
+    </script>
+
+    <h3>문제 2. 버튼 클릭 시 div 크기 조절</h3>
+    <div id="div2" class="area"></div>
+    <button onclick="halfSize();">50x50</button>
+    <button onclick="defaultSize();">원본(100x100)</button>
+    <button onclick="doubleSize();">200x200</button>
+
+    <script>
+        const box2 = document.getElementById("div2");
+
+        function halfSize() {
+            box2.style.width = "50px";
+            box2.style.height = "50px";
+        }
+
+        function defaultSize() {
+            box2.style.width = "100px";
+            box2.style.height = "100px";
+        }
+
+        function doubleSize() {
+            box2.style.width = "200px";
+            box2.style.height = "200px";
+        }
+    </script>
+
+    <h3>문제 3. 계산기 만들기</h3>
+    첫 번째 값 : <input id="num1">
+    두 번째 값 : <input id="num2">
+    <input type="button" value="+" onclick="calculator(this.value);">
+    <input type="button" value="-" onclick="calculator(this.value);">
+    <input type="button" value="x" onclick="calculator(this.value);">
+    <input type="button" value="/" onclick="calculator(this.value);">
+    <input type="button" value="%" onclick="calculator(this.value);">
+    계산 결과 : <span id="calc"></span>
+
+    <script>
+        function calculator(op) {
+            const n1 = Number(document.getElementById("num1").value);
+            const n2 = Number(document.getElementById("num2").value);
+            const resultBox = document.getElementById("calc");
+            let result;
+
+            switch (op) {
+                case '+': result = n1 + n2; break;
+                case '-': result = n1 - n2; break;
+                case 'x': result = n1 * n2; break;
+                case '/': result = n2 !== 0 ? n1 / n2 : "0으로 나눌 수 없습니다"; break;
+                case '%': result = n1 % n2; break;
+                default: result = "연산 오류";
+            }
+
+            resultBox.textContent = result;
+        }
+    </script>
+
+    <h3>문제 4-1. ul의 li 모두 삭제</h3>
+    <button onclick="deleteList();">목록 삭제</button>
+    <ul id="list">
+        <li>의류</li>
+        <li>잡화</li>
+        <li>가전</li>
+        <li>가구</li>
+        <li>식품</li>
+        <li>레저</li>
+        <li>여가</li>
+        <li>도서</li>
+    </ul>
+
+    <script>
+        function deleteList() {
+            const list = document.getElementById("list");
+            list.innerHTML = ""; 
+        }
+    </script>
+
+    <h3>문제 4-2. 목록 추가</h3>
+    <p>
+        버튼 클릭 시 "추가할 목록을 입력하세요"라는 prompt 창을 띄우고
+        입력받은 값으로 li 요소를 생성해 ul에 추가.
+        입력하지 않고 취소 시에는 추가하지 않음.
+    </p>
+    <button onclick="createList();">목록 생성</button>
+
+    <script>
+        function createList() {
+            const content = prompt("추가할 목록을 입력하세요");
+            if (!content) return; 
+
+            const newItem = document.createElement("li");
+            newItem.textContent = content;
+
+            const list = document.getElementById("list");
+            list.appendChild(newItem);
+        }
+    </script>
+</body>
+</html>
